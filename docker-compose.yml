@@ -1,0 +1,22 @@
+version: '3'
+services:
+  
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    env_file: ./db.env
+
+  flask:
+    image: backend-flask
+    build:
+      context: ./server
+    ports:
+      - 5000:5000
+
+  vue:
+    image: frontend-vue
+    build:
+      context: ./client
+    ports:
+      - 8080:80

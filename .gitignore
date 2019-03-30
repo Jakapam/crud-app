@@ -19,3 +19,6 @@
 *.njsproj
 *.sln
 *.sw*
+
+# secrets
+db.env
