@@ -4,27 +4,30 @@ services:
   postgres:
     image: postgres
     environment:
-      - POSTGRES_USER=$DB_USER
-      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - 5432:5432
     env_file: ./.env
 
   flask:
+    restart: always
     image: backend-flask
     environment:
-      - PERFORM_MIGRATIONS=${PERFORM_MIGRATIONS}
+      - PERFORM_MIGRATIONS=$PERFORM_MIGRATIONS
     build:
       context: ./server
     entrypoint: /app/entrypoint.sh
     ports:
       - 5000:5000
+    depends_on:
+      - postgres
 
   vue:
     image: frontend-vue
     build:
       args:
-        - API_BASE_URL=${API_BASE_URL}
+        - API_BASE_URL=$API_BASE_URL
       context: ./client
     ports:
       - 8080:80

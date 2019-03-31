@@ -6,7 +6,8 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'this-really-needs-to-be-changed'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@postgres:5432'
+    JWT_SECRET_KEY = 'this-also-really-needs-to-be-changed'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://posty:password@postgres:5432'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class ProductionConfig(Config):
