@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from config import DevelopmentConfig 
 
 DEBUG=True
 
 app = Flask(__name__)
-app.config.from_object(__name__)
-
+app.config.from_object(DevelopmentConfig)
 CORS(app)
 
 @app.route("/")
