@@ -3,12 +3,17 @@ services:
   
   postgres:
     image: postgres
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
     ports:
       - 5432:5432
     env_file: ./.env
 
   flask:
     image: backend-flask
+    environment:
+      - PERFORM_MIGRATIONS=${PERFORM_MIGRATIONS}
     build:
       context: ./server
     entrypoint: /app/entrypoint.sh
