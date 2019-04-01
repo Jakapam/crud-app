@@ -20,8 +20,6 @@ services:
     entrypoint: /app/entrypoint.sh
     ports:
       - 5000:5000
-    depends_on:
-      - postgres
 
   vue:
     image: frontend-vue
