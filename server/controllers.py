@@ -19,8 +19,8 @@ def sign_up():
         db.session.add(new_user)
         db.session.commit()
     except Exception as e:
-        print("Error occurred: {}".format(e) )
-        print("Rolling back transaction....")
+        app.logging.error("Error occurred: {}".format(e) )
+        app.logging.error("Rolling back transaction....")
         db.session.rollback()
         return "There was an issue with your request, please reformat and try again", 400
     
