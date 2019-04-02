@@ -12,6 +12,9 @@ The build process will import all needed dependencies for the Vue frontend and t
 
 ## Usage
 
+This project requires an `.env` file to run locally, the docker-compose file expects the following values:
+`DB_USER`, `DB_PASSWORD`, `API_BASE_URL`
+
 To run the application locally navigate to project root and enter `docker-compose up`
 
 Frontend can be accessed at `http://localhost:8080`.
