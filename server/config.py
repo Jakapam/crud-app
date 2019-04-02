@@ -9,6 +9,7 @@ class Config(object):
     JWT_SECRET_KEY = 'this-also-really-needs-to-be-changed'
     SQLALCHEMY_DATABASE_URI = 'postgresql://posty:password@localhost:5432'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_ACCESS_TOKEN_EXPIRES = False
 
 class ProductionConfig(Config):
     DEBUG = False

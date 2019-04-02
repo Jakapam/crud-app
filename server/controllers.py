@@ -1,12 +1,44 @@
 import json
 from flask import Blueprint, request, jsonify, make_response
-from flask_jwt_extended import create_access_token, JWTManager
-from models import User
+from flask_jwt_extended import create_access_token, JWTManager, jwt_required
+from models import User, Question, Token, Modifier, Response
 from app import db, app
+from flask_restless import APIManager
+import pdb
 
-#, Question, Token, Response
+manager = APIManager(app, flask_sqlalchemy_db=db)
 jwt = JWTManager(app)
 api = Blueprint('api', 'api', url_prefix='/api')
+
+@jwt_required
+def auth_func(*args, **kwargs):
+    return True
+
+def generate_api_blueprint(resource):
+    include_methods, include_columns = None, None
+    if resource is Token:
+        include_methods = ['value']
+        include_columns = ["id","name"]
+    elif resource is User:
+        include_columns = ["id","username","email"]
+
+    return manager.create_api_blueprint(
+        resource, 
+        methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
+        preprocessors= dict( 
+            GET_SINGLE=[auth_func], 
+            GET_MANY=[auth_func],
+            POST=[auth_func],
+            PATCH_SINGLE=[auth_func], 
+            PATCH_MANY=[auth_func],
+            DELETE_SINGLE=[auth_func], 
+            DELETE_MANY=[auth_func]),
+        include_methods = include_methods,
+        include_columns = include_columns
+        ) 
+
+api_blueprints = [generate_api_blueprint(resource) for resource in [User, Question, Modifier, Response, Token]] 
+
 
 @api.route('/signup', methods=["POST"])
 def sign_up():

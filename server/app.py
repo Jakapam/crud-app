@@ -19,34 +19,11 @@ app.config.from_object(DevelopmentConfig)
 db = SQLAlchemy(app)
 CORS(app)
 
-from controllers import api
+from controllers import api, api_blueprints
 app.register_blueprint(api)
 
-
-@app.route('/login', methods=['POST'])
-def login():
-    if not request.is_json:
-        return jsonify({"msg": "Missing JSON in request"}), 400
-
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
-    if not username:
-        return jsonify({"msg": "Missing username parameter"}), 400
-    if not password:
-        return jsonify({"msg": "Missing password parameter"}), 400
-
-    if username != 'test' or password != 'test':
-        return jsonify({"msg": "Bad username or password"}), 401
-
-    # Identity can be any data that is json serializable
-    access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token), 200
-
-@app.route("/")
-def home():
-    response_object = {"msg":"Hello World!!!"}
-    return jsonify(response_object)
-
+for blueprint in api_blueprints:
+    app.register_blueprint(blueprint) 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

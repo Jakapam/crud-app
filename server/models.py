@@ -1,5 +1,4 @@
 from app import db, app
-# from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import relationship, backref
 from flask_bcrypt import Bcrypt
@@ -30,6 +29,21 @@ class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     modifiers = relationship("Modifier", back_populates="token")
+    @property
+    def questions(self):
+        q = Question.query.join(Modifier).filter(Modifier.token_id==self.id)
+        return q.all()
+
+    def value(self):
+        val = 0
+        for question in self.questions:
+            for response in question.responses:
+                modifier = Modifier.query.filter(Modifier.question == question).first()
+                if response.answer is 'yes':
+                    val += modifier.yes_modifier
+                else:
+                    val += modifier.no_modifier
+        return val
 
 class Modifier(db.Model):
     id = db.Column(db.Integer, primary_key=True)
