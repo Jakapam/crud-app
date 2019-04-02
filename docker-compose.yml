@@ -2,7 +2,8 @@ version: '3'
 services:
   
   postgres:
-    image: postgres
+    restart: always
+    image: postgres:11-alpine
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -15,7 +16,7 @@ services:
     image: backend-flask
     build:
       args:
-        - DB_CONN_STRING=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432
+        - DB_CONN_STRING=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_USER}
       context: ./server
     entrypoint: /app/entrypoint.sh
     ports:

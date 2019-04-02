@@ -4,7 +4,7 @@ from flask_jwt_extended import create_access_token, JWTManager, jwt_required
 from models import User, Question, Token, Modifier, Response
 from app import db, app
 from flask_restless import APIManager
-import pdb
+from flask_cors import cross_origin
 
 manager = APIManager(app, flask_sqlalchemy_db=db)
 jwt = JWTManager(app)
@@ -49,7 +49,12 @@ def generate_api_blueprint(resource):
 api_blueprints = [generate_api_blueprint(resource) for resource in [User, Question, Modifier, Response, Token]] 
 
 
+@api.route('/sanity')
+def sanity_check():
+    return jsonify({"msg": "sanity_checked"})
+
 @api.route('/signup', methods=["POST"])
+@cross_origin()
 def sign_up():
     if request.method == 'POST':
         user_data = json.loads(request.data)
@@ -70,17 +75,17 @@ def sign_up():
     return jsonify(access_token=access_token), 201
 
 @api.route('/login', methods=["POST"])
+@cross_origin()
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
-
     username = request.json.get('username', None)
     password = request.json.get('password', None)
     if not username:
         return jsonify({"msg": "Missing username parameter"}), 400
     if not password:
         return jsonify({"msg": "Missing password parameter"}), 400
-
+    
     user = User.query.filter_by(username=username).first()
 
     if not user or not user.check_password(password):
@@ -88,4 +93,5 @@ def login():
 
     # Identity can be any data that is json serializable
     access_token = create_access_token(identity=username)
+    app.logger.info(access_token)
     return jsonify(access_token=access_token), 200

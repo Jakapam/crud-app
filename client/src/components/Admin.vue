@@ -11,7 +11,7 @@ import { axiosRequest } from "../main"
 import Resource from "./Resource"
 
 export default {
-  name: 'Admin',
+  name: 'admin',
   components: {
     Resource
   },
