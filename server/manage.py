@@ -6,8 +6,6 @@ from config import DevelopmentConfig
 from app import app, db
 from models import User, Question, Token, Modifier, Response
 
-import pdb
-
 app.config.from_object(DevelopmentConfig)
 
 migrate = Migrate(app, db)
@@ -15,11 +13,20 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 @manager.command
-def shell():
-    pdb.set_trace()
+def createadminuser():
+    user = User(username="admin", email="admin", is_admin=True)
+    user.set_password("admin")
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error("Error creating user: {}".format(e))
+
+    app.logger.info("Admin '{}' created".format("Admin"))
 
 @manager.command
-def createadminuser():
+def createcustomadminuser():
     username = prompt('Username')
     email = prompt('E-Mail')
 

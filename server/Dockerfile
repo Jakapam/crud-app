@@ -5,5 +5,7 @@ WORKDIR $APP
 EXPOSE 5000
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+ARG DB_CONN_STRING
+ENV DB_CONN_STRING=${DB_CONN_STRING}
 COPY . .
 RUN ["chmod", "+x", "/app/entrypoint.sh"]

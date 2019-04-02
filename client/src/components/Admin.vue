@@ -1,12 +1,25 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div>
+    <div v-for="resource in resources" :key="resource">
+        <Resource :resourceName="resource"/>
+    </div> 
   </div>
 </template>
 
 <script>
+import { axiosRequest } from "../main"
+import Resource from "./Resource"
+
 export default {
-  name: 'HelloWorld',
+  name: 'Admin',
+  components: {
+    Resource
+  },
+  data(){
+    return {
+       resources: ["user","question","token"]
+    }
+  },
   props: {
     msg: String
   }

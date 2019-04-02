@@ -1,23 +1,26 @@
 <template>
   <div id="app">
-    <HelloWorld :msg="msg"/>
+    <Admin/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Admin from './components/Admin.vue'
 import { axiosRequest } from "./main"
 
 export default {
   name: 'app',
   mounted(){
-    axiosRequest()
+    axiosRequest("/user")
       .then(({data})=>{
-        this.msg = data.msg
+        console.log(data)
+      })
+      .catch((e)=>{
+        console.log(e)
       })
   },
   components: {
-    HelloWorld
+    Admin
   },
   data() {
     return{

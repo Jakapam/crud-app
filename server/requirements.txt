@@ -3,6 +3,7 @@ flask_cors
 Flask-Script
 Flask-SQLAlchemy
 Flask-Migrate
+flask-restless
 flask-jwt-extended
 flask-bcrypt
 psycopg2

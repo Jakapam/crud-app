@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, after_this_request,jsonify, make_response
 from flask_jwt_extended import create_access_token, JWTManager, jwt_required
 from models import User, Question, Token, Modifier, Response
 from app import db, app
@@ -12,7 +12,14 @@ api = Blueprint('api', 'api', url_prefix='/api')
 
 @jwt_required
 def auth_func(*args, **kwargs):
-    return True
+    pass
+
+def allow_control_headers(**kw):
+    @after_this_request
+    def add_headers(response):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        return response
 
 def generate_api_blueprint(resource):
     include_methods, include_columns = None, None
@@ -20,19 +27,21 @@ def generate_api_blueprint(resource):
         include_methods = ['value']
         include_columns = ["id","name"]
     elif resource is User:
-        include_columns = ["id","username","email"]
+        include_columns = ["id","username","email","is_admin"]
+    elif resource is Response:
+        include_columns = ["id","question","answer"]
 
     return manager.create_api_blueprint(
         resource, 
         methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
         preprocessors= dict( 
-            GET_SINGLE=[auth_func], 
-            GET_MANY=[auth_func],
-            POST=[auth_func],
-            PATCH_SINGLE=[auth_func], 
-            PATCH_MANY=[auth_func],
-            DELETE_SINGLE=[auth_func], 
-            DELETE_MANY=[auth_func]),
+            GET_SINGLE=[auth_func, allow_control_headers], 
+            GET_MANY=[auth_func, allow_control_headers],
+            POST=[auth_func, allow_control_headers],
+            PATCH_SINGLE=[auth_func, allow_control_headers], 
+            PATCH_MANY=[auth_func, allow_control_headers],
+            DELETE_SINGLE=[auth_func, allow_control_headers], 
+            DELETE_MANY=[auth_func, allow_control_headers]),
         include_methods = include_methods,
         include_columns = include_columns
         ) 

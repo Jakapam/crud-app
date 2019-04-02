@@ -13,9 +13,9 @@ services:
   flask:
     restart: always
     image: backend-flask
-    environment:
-      - PERFORM_MIGRATIONS=$PERFORM_MIGRATIONS
     build:
+      args:
+        - DB_CONN_STRING=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432
       context: ./server
     entrypoint: /app/entrypoint.sh
     ports:
