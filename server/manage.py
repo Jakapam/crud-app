@@ -16,12 +16,15 @@ manager.add_command('db', MigrateCommand)
 def createadminuser():
     user = User(username="admin", email="admin", is_admin=True)
     user.set_password("admin")
+    db.session.add(user)
+
     try:
-        db.session.add(user)
         db.session.commit()
     except Exception as e:
         db.session.rollback()
         app.logger.error("Error creating user: {}".format(e))
+    finally:
+        db.session.close()
 
     app.logger.info("Admin '{}' created".format("Admin"))
 
@@ -37,12 +40,15 @@ def createcustomadminuser():
         sys.exit('\nCould not create user: Passwords did not match')
     user = User(username=username, email=email, is_admin=True)
     user.set_password(password)
+    db.session.add(user)
+
     try:
-        db.session.add(user)
         db.session.commit()
     except Exception as e:
         db.session.rollback()
         app.logger.error("Error creating user: {}".format(e))
+    finally:
+        db.session.close()
 
     app.logger.info("Admin '{}' created".format(username))
 
@@ -98,8 +104,14 @@ def mockdata():
     app.logger.info("Inserting mock data...")
     for datum in data:
         db.session.add(datum)
-
-    db.session.commit()
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error("Error inserting mock data: {}".format(e))
+        finally:
+            db.session.close()
+    
     app.logger.info("Mock data inserted")
 
 if __name__ == '__main__':

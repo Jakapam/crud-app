@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Admin/>
+    <router-view/>
   </div>
 </template>
 
@@ -11,13 +11,13 @@ import { axiosRequest } from "./main"
 export default {
   name: 'app',
   mounted(){
-    axiosRequest("/user")
-      .then(({data})=>{
-        console.log(data)
-      })
-      .catch((e)=>{
-        console.log(e)
-      })
+    // axiosRequest("/user")
+    //   .then(({data})=>{
+    //     console.log(data)
+    //   })
+    //   .catch((e)=>{
+    //     console.log(e)
+    //   })
   },
   components: {
     Admin

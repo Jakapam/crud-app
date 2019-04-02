@@ -15,10 +15,8 @@ export default {
     }
   },
   mounted(){
-    axiosRequest(`/${this.resourceName}`)
-    .then(({data})=>{
-      this.resourceData = data.objects
-    })
+    axiosRequest.get(`${this.resourceName}`)
+      .then(({data})=>{ this.resourceData = data.objects})
   },
   props: {
     resourceName: String

@@ -1,7 +1,6 @@
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
-
 class Config(object):
+    print(os.environ['DB_CONN_STRING'])
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
