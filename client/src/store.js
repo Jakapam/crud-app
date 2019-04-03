@@ -63,9 +63,9 @@ const store = new Vuex.Store({
                     const token = data.access_token
                     axiosRequest.defaults.headers.authorization = token
                     const user = parseUserFromToken(token)
+                    router.push("/admin")
                     localStorage.setItem("token", token)
                     commit('setUser', { user })
-                    router.push("/admin")
                 }).catch(err => {
                     console.log(err)
                 })

@@ -93,5 +93,4 @@ def login():
 
     # Identity can be any data that is json serializable
     access_token = create_access_token(identity=username)
-    app.logger.info(access_token)
     return jsonify(access_token=access_token), 200

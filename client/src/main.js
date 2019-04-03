@@ -7,20 +7,13 @@ import router from './router'
 
 
 export const axiosRequest = axios.create({
-  baseURL:'http://localhost:5000/api',
+  baseURL: process.env.API_BASE_URL,
   headers:{
     Authorization: "Bearer " + localStorage.getItem("token"),
     contentType: "Application/Json"
   }
 })
 
-function verifyToken(token) {
-  return axiosRequests.get("/", {
-    headers: {
-      authorization: token
-    }
-  })
-}
 
 Vue.config.productionTip = false
 
