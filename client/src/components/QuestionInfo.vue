@@ -1,8 +1,7 @@
 <template>
   <div>
-    <span style="font-weight:bold">{{question.body}}</span>
-    <h3>Modifications</h3>
-    <ModifierSection :modifiers="question.modifiers"/>
+    <h2 style="font-weight:bold">{{question.body}}</h2>
+    <ModifierSection :question="question" :modifiers="question.modifiers"/>
   </div>
 </template>
 

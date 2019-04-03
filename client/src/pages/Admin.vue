@@ -1,10 +1,7 @@
 <template>
   <div>
-    <h2>Users</h2>
     <UserSection/>
-    <h2>Tokens</h2>
     <TokenSection/>
-    <h2>Questions</h2>
     <QuestionSection/>
   </div>
 </template>
@@ -17,16 +14,14 @@ import QuestionSection from "../sections/QuestionSection"
 
 export default {
   name: 'admin',
+  mounted(){
+    this.$store.dispatch('getTokens')
+  },
   components: {
     Resource,
     UserSection,
     TokenSection,
     QuestionSection
-  },
-  data(){
-    return {
-       resources: ["question"]
-    }
   },
   props: {
     msg: String

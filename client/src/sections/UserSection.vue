@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>Users</h2>
     <UserInfo v-for="user in users" :key="user.id" :user="user"/>
   </div>
 </template>

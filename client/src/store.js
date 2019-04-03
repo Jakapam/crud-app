@@ -17,7 +17,8 @@ export function parseUserFromToken(token) {
 
 const store = new Vuex.Store({
     state: {
-        user: null
+        user: null,
+        tokens: []
     },
     getters: {
         isLoggedIn(state){
@@ -32,9 +33,17 @@ const store = new Vuex.Store({
         },
         resetState(state, payload) {
             state.user = null
+        },
+        setTokens(state, payload){
+            state.tokens = payload.tokens
         }
     },
     actions: {
+        getTokens({ commit }){
+            axiosRequest.get('/token').then(({data})=>{
+                commit('setTokens',{ tokens: data.objects })
+            })
+        },
         logout({ commit }, payload) {
             axiosRequest.defaults.headers.authorization = null
             localStorage.removeItem('token')

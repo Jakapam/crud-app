@@ -1,7 +1,16 @@
 <template>
   <div>
+    <h2>Questions <span @click="handleClick">+</span></h2>
     <QuestionInfo v-for="question in questions" :key="question.id" :question="question"/>
-  </div>
+        <div v-if="toggleForm" class="post-form">
+            <button @click="handleClick" class="close-button">&times;</button>
+            <h2>Add New Question</h2>
+            <form @submit.prevent="handleSubmit">
+                <input v-model="body" placeholder="question">
+                <input type="submit"/>
+            </form>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -14,8 +23,24 @@ export default {
   },
   data(){
     return {
-        questions: []
+        questions: [],
+        body: "",
+        toggleForm: false
     }
+  },
+  methods: {
+    handleClick(){
+          this.toggleForm = !this.toggleForm
+    },
+    handleSubmit(){
+        axiosRequest.post('/question',{
+            body: this.body
+        })
+        .then(({data})=>{
+            this.questions.push(data)
+            this.toggleForm = !this.toggleForm
+        })
+      }
   },
   mounted(){
     axiosRequest.get('/question')
