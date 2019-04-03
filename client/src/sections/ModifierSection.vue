@@ -1,7 +1,12 @@
 <template>
   <div>
     <h3>Modifiers  <span @click="handleClick">+</span></h3>
-    <ModifierInfo v-for="modifier in modifiers" :key="modifier.id" :modifier="modifier"/>       
+    <div :key="modifiers.length">
+      <span v-for="modifier in modifiers" :key="modifier.id">
+        <ModifierInfo :modifier="modifier"/>
+        <button @click="handleDelete" :value="modifier.id">Delete Me</button>
+      </span>
+    </div>      
       <div v-if="toggleForm" class="post-form">
           <button @click="handleClick" class="close-button">&times;</button>
           <h2>Add New Modifier for Question:</h2>
@@ -43,6 +48,11 @@ export default {
   methods: {
     handleClick(){
           this.toggleForm = !this.toggleForm
+    },
+    handleDelete(e){
+      axiosRequest.delete(`/modifier/${e.target.value}`).then(()=>{
+        this.$store.dispatch('getManyResources',{resource:"question"})
+      })
     },
     handleSubmit(){  
         axiosRequest.post('/modifier',{

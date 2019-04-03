@@ -18,7 +18,8 @@ export function parseUserFromToken(token) {
 const store = new Vuex.Store({
     state: {
         user: null,
-        tokens: []
+        tokens: [],
+        questions: []
     },
     getters: {
         isLoggedIn(state){
@@ -34,14 +35,19 @@ const store = new Vuex.Store({
         resetState(state, payload) {
             state.user = null
         },
-        setTokens(state, payload){
-            state.tokens = payload.tokens
+        setResources(state, payload){
+            state[payload.resource] = payload.objects
         }
     },
     actions: {
-        getTokens({ commit }){
-            axiosRequest.get('/token').then(({data})=>{
-                commit('setTokens',{ tokens: data.objects })
+        getManyResources({ commit },{ resource }){
+            const resourceCapitalize = resource.charAt(0).toUpperCase() + resource.slice(1)
+            axiosRequest.get(`${resource}`).then(({data})=>{
+                let payload = { 
+                    resource: `${resource}s`,
+                    objects: data.objects  
+                }
+                commit('setResources', payload)
             })
         },
         logout({ commit }, payload) {

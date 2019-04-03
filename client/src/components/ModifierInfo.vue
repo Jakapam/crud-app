@@ -2,8 +2,9 @@
   <div :key="tokenName" v-if="tokenName">
       <h4>{{tokenName}}</h4>
       <span>Yes: {{modifier.yes_modifier}} </span>
+      <button @click="handleAdd" value="yes_modifier">+</button><button @click="handleSub" value="yes_modifier">-</button>
       <span>No: {{modifier.no_modifier}} </span>
-      <span><button @click="handleClick">Delete Me</button></span>
+      <button @click="handleAdd" value="no_modifier">+</button><button @click="handleSub" value="no_modifier">-</button>
   </div>
 </template>
 
@@ -18,10 +19,23 @@ export default {
         })
   },
   methods:{
-    handleClick(){
-      axiosRequest.delete(`/modifier/${this.modifier.id}`).then(()=>{
-        this.tokenName = null
-      })
+    handleAdd(e){
+      let newVals = {}
+      newVals[e.target.value] = this.modifier[e.target.value] + 1
+      axiosRequest.patch(`/modifier/${this.modifier.id}`, newVals)
+        .then(()=>{
+          this.$store.dispatch('getManyResources',{resource: "question"})
+          this.$store.dispatch('getManyResources',{resource: "token"})
+        })
+    },
+    handleSub(e){
+      let newVals = {}
+      newVals[e.target.value] = this.modifier[e.target.value] - 1
+      axiosRequest.patch(`/modifier/${this.modifier.id}`, newVals)
+        .then(()=>{
+          this.$store.dispatch('getManyResources',{resource: "question"})
+          this.$store.dispatch('getManyResources',{resource: "token"})
+        })
     }
   },
   data(){

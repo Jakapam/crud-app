@@ -15,7 +15,8 @@ import QuestionSection from "../sections/QuestionSection"
 export default {
   name: 'admin',
   mounted(){
-    this.$store.dispatch('getTokens')
+    this.$store.dispatch('getManyResources',{resource:"token"})
+    this.$store.dispatch('getManyResources',{resource:"question"})
   },
   components: {
     Resource,
@@ -29,20 +30,3 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

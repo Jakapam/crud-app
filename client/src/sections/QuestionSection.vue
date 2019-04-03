@@ -21,9 +21,13 @@ export default {
   components: {
       QuestionInfo
   },
+  computed: {
+    questions(){
+      return this.$store.state.questions
+    }
+  },
   data(){
     return {
-        questions: [],
         body: "",
         toggleForm: false
     }
@@ -41,10 +45,6 @@ export default {
             this.toggleForm = !this.toggleForm
         })
       }
-  },
-  mounted(){
-    axiosRequest.get('/question')
-      .then(({data})=>{ this.questions = data.objects})
   }
 }
 </script>
