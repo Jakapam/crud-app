@@ -8,7 +8,7 @@
 import { axiosRequest } from "../main"
 
 export default {
-  name: 'Admin',
+  name: 'resource',
   data(){
     return{
       resourceData: []

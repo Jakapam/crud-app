@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { axiosRequest } from "../main"
-
 export default {
   
   name: 'login',
@@ -25,13 +23,11 @@ export default {
     }
   },
   methods:{
-    handleSubmit(e){
-      axiosRequest.post('/login',{
+    handleSubmit(){
+      this.$store.dispatch('loginFromForm', {
         username: this.username,
         password: this.password
-      }).then(({data})=>{
-        localStorage.setItem("token", data.access_token)
-      }).catch((e)=>{console.log(e)})
+      })
     }
   }
 }
