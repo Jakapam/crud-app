@@ -12,8 +12,8 @@ The build process will import all needed dependencies for the Vue frontend and t
 
 ## Usage
 
-This project requires an `.env` file to run locally, the docker-compose file expects the following values:
-`DB_USER`, `DB_PASSWORD`, `API_BASE_URL`
+This project requires an `.env` file to run locally, the docker-compose expects the following values in the file:
+`DB_USER`, `DB_PASSWORD`, `API_BASE_URL`,`JWT_SECRET`, and `FLASK_SECRET`.
 
 To run the application locally navigate to project root and enter `docker-compose up`. Entrypoint for django app will generate mockdata, including an admin user `admin` with password `admin`.
 
