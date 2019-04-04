@@ -10,12 +10,9 @@
 </template>
 
 <script>
+import { axiosRequest } from '../main';
 export default {
-  
   name: 'login',
-  mounted(){
-    
-  },
   data() {
     return{
       username: "",
@@ -27,6 +24,11 @@ export default {
       this.$store.dispatch('loginFromForm', {
         username: this.username,
         password: this.password
+      }).then(({data})=>{
+        let token = data.access_token
+        axiosRequest.defaults.headers.Authorization = `Bearer ${token}`
+        localStorage.setItem("token", token)
+        this.$router.push('admin')
       })
     }
   }

@@ -1,15 +1,16 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import App from './App.vue'
 import axios from 'axios'
 import store from './store'
 import router from './router'
 
+let token = localStorage.getItem("token")
+token = token ? `Bearer ${token}` : null
 
 export const axiosRequest = axios.create({
   baseURL: process.env.API_BASE_URL,
   headers:{
-    Authorization: "Bearer " + localStorage.getItem("token"),
+    Authorization: token,
     contentType: "Application/Json"
   }
 })

@@ -23,15 +23,15 @@ const router = new VueRouter({
     path: '*', redirect: '/'
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeResolve((to, from, next) => {
     if(to.path != '/login') {
-        if(store.getters.isLoggedIn) { 
+        if(localStorage.getItem("token")) { 
             next();
         } else {
             next('login');
         }
     } else {
-        if(store.getters.isLoggedIn) { 
+        if(localStorage.getItem("token")) { 
             next('admin');
         } else {
             next();

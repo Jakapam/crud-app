@@ -17,6 +17,9 @@ services:
     build:
       args:
         - DB_CONN_STRING=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_USER}
+        - JWT_SECRET=${JWT_SECRET}
+        - FLASK_SECRET=${FLASK_SECRET}
+        - ENVIRONMENT=${ENV}
       context: ./server
     entrypoint: /app/entrypoint.sh
     ports:

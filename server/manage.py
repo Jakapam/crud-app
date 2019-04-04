@@ -53,6 +53,13 @@ def createcustomadminuser():
     app.logger.info("Admin '{}' created".format(username))
 
 @manager.command
+def dropall():
+    app.logger.info("Dropping all tables")
+    db.metadata.reflect(bind=db.engine)
+    db.metadata.drop_all(db.engine)
+    app.logger.info("All tables dropped")
+
+@manager.command
 def mockdata():
 
     user = User(

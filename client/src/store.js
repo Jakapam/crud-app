@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import router from './router'
 import { axiosRequest } from './main'
 
 Vue.use(Vuex)
@@ -21,13 +20,6 @@ const store = new Vuex.Store({
         tokens: [],
         questions: []
     },
-    getters: {
-        isLoggedIn(state){
-            let token = localStorage.getItem("token")
-            let loggedIn = !!state.user || token
-            return loggedIn
-        }
-    },
     mutations: {
         setUser(state, payload) {
             state.user = payload.user
@@ -41,7 +33,7 @@ const store = new Vuex.Store({
     },
     actions: {
         getManyResources({ commit },{ resource }){
-            const resourceCapitalize = resource.charAt(0).toUpperCase() + resource.slice(1)
+            debugger
             axiosRequest.get(`${resource}`).then(({data})=>{
                 let payload = { 
                     resource: `${resource}s`,
@@ -51,24 +43,17 @@ const store = new Vuex.Store({
             })
         },
         logout({ commit }, payload) {
-            axiosRequest.defaults.headers.authorization = null
+            axiosRequest.defaults.headers.Authorization = null
             localStorage.removeItem('token')
             commit('resetState')
         },
         loginFromForm({ commit }, payload) {
-            axiosRequest.post('/login',{
+            return axiosRequest.post('/login',{
                 username: payload.username,
                 password: payload.password
-              }).then(({data}) => {
-                    const token = data.access_token
-                    axiosRequest.defaults.headers.authorization = token
-                    const user = parseUserFromToken(token)
-                    router.push("/admin")
-                    localStorage.setItem("token", token)
-                    commit('setUser', { user })
-                }).catch(err => {
-                    console.log(err)
-                })
+              }).catch(err => {
+                console.log(err)
+            })
         }
     }
 })
