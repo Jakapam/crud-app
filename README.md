@@ -19,6 +19,6 @@ To run the application locally navigate to project root and enter `docker-compos
 
 Frontend can be accessed at `http://localhost:8080`.
 
-API can be accessed at `http://localhost:5000/api`. This should also be the value passed to `API_BASE_URL` in the .env file.
+API can be accessed at `http://localhost:5000/api`. This should also be the value passed to `API_BASE_URL` in the .env file when running locally.
 
 Database can be administered at postgres default port: `5432`
